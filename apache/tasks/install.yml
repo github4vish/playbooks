@@ -1,0 +1,12 @@
+# This task will install apache http server
+
+
+  - name: Install Tomcat , Tomcat Admin and Manager
+    yum:
+      name: "item"
+      state: present
+  with_items
+  - tomcat
+  - tomcat-webapps
+  - tomcat-admin-webapps
+

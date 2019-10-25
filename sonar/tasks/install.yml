@@ -1,0 +1,25 @@
+# This task will install apache http server
+
+- name: setup JRE environment
+  yum:
+    name: ['java-1.8.0','java-1.8.0-devel']
+    state: present
+- name: Download  Nexus OSS package zip , unzip , start the service
+  command: '{{ item }}'
+  with_items:
+    - curl -LO https://download.sonatype.com/nexus/oss/nexus-latest-bundle.tar.gz 
+    - tar -xzf nexus-latest-bundle.tar.gz
+    - nexus-2.14.15-01/bin/nexus start
+
+  #- name: Allow related and established connections
+  #    iptables:
+  #       chain: INPUT
+  #       protocol: tcp
+  #       destination_port: 7777
+  #       ctstate: ESTABLISHED,RELATED
+  #       jump: ACCEPT
+     #become: yes
+  #- name: Allow port 8080
+  #shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+    

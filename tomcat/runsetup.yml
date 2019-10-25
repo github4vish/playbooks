@@ -1,0 +1,7 @@
+---
+
+- name: run jenkins
+  hosts: deploy 
+  become: true
+  roles:
+    - ../tomcat

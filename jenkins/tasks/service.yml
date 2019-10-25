@@ -1,0 +1,8 @@
+# This task will start and enable apache
+
+  - name: Start and Enable Jenkins
+    service:
+      name: jenkins 
+      state: started
+      enabled: yes
+

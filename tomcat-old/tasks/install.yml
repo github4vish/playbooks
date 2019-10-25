@@ -1,0 +1,26 @@
+# This task will install apache http server
+
+ - name: install the  rpm from a remote hrepo
+   yum:
+     name: https://rpmfind.net/linux/centos/7.7.1908/os/x86_64/Packages/tomcat-7.0.76-9.el7_6.noarch.rpm
+     state: present
+
+     
+ - name: install the  Tomcat Admin rpm from a remote hrepo
+   yum:
+     name: https://rpmfind.net/linux/centos/7.7.1908/os/x86_64/Packages/tomcat-webapps-7.0.76-9.el7_6.noarch.rpm
+     state: present
+ 
+ - name: install the  Tomcat Manage rrpm from a remote repo
+   yum:
+     name: https://rpmfind.net/linux/centos/7.7.1908/os/x86_64/Packages/tomcat-admin-webapps-7.0.76-9.el7_6.noarch.rpm
+     state: present
+        
+     #yum:
+        #name: "item"
+        #state: present
+        #with_items:
+        #- tomcat
+        #- tomcat-webapps
+        #- tomcat-admin-webapps
+

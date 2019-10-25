@@ -1,0 +1,22 @@
+# This task will install apache http server
+
+- name: install the  java,maven, git setup
+  yum:
+    name: ['git','wget','java-1.8.0','java-1.8.0-devel','maven']
+    state: present
+- name: Download jenkins repo
+  command: wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+- name: Import Jenkins CI key
+  rpm_key:
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+    state: present
+- name: Install Jenkins
+  yum:
+    name: "jenkins"
+    state: present
+
+- name: Allow port 8080
+  shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+     

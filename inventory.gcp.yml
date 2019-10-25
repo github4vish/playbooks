@@ -1,0 +1,5 @@
+plugin: gcp_compute
+projects:
+  - healthy-dolphin-245407
+auth_kind: serviceaccount
+service_account_file: /home/vish/my_account.json

@@ -1,0 +1,22 @@
+# This task will copy custom httpd.conf file to /etc/httpd/conf/httpd.conf
+# This task will set SELinux to permissive
+
+  - name: Put SELinux in permissive mode
+    selinux:
+      policy: targeted
+      state: permissive
+
+
+  - name: Copy tomcat config with port 7777 defined
+    copy: 
+      src: files/server.xml 
+      dest: /usr/share/tomcat/conf/server.xml
+    notify:
+      - Restart Tomcat
+
+  - name: Copy Tomcat users
+    copy: 
+      src: files/tomcat-users.xml 
+      dest: /usr/share/tomcat/conf/tomcat-users.xml
+    notify:
+      - Restart Tomcat
