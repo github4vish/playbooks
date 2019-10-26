@@ -1,0 +1,15 @@
+# This task will copy custom httpd.conf file to /etc/httpd/conf/httpd.conf
+# This task will set SELinux to permissive
+
+#- name: Put SELinux in permissive mode
+#    selinux:
+#      policy: targeted
+#      state: permissive
+
+
+  - name: Copy Nexus to run as sudo
+    copy: 
+      src: files/nexus 
+      dest: nexus-2.14.15-01/bin/nexus
+      #notify:
+      #- Restart Tomcat
