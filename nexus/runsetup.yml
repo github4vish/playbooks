@@ -1,7 +1,7 @@
 ---
 
-- name: run jenkins
-  hosts: deploy 
+- name: run nexus
+  hosts: release
   become: true
   roles:
-    - ../tomcat
+    - ../nexus
