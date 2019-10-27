@@ -1,7 +1,7 @@
 ---
 
-- name: run jenkins
-  hosts: deploy 
+- name: run sonar
+  hosts: test 
   become: true
   roles:
-    - ../tomcat
+    - ../sonar

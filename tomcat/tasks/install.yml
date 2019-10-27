@@ -10,14 +10,21 @@
     - tar -xzf apache-tomcat-7.0.96.tar.gz 
     - apache-tomcat-7.0.96/bin/startup.sh
 
-  #- name: Allow related and established connections
-  #    iptables:
-  #       chain: INPUT
-  #       protocol: tcp
-  #       destination_port: 7777
-  #       ctstate: ESTABLISHED,RELATED
-  #       jump: ACCEPT
-     #become: yes
+
+- name: Copy tomcat config with port 7777 defined
+  copy: 
+    src: files/server.xml 
+    dest: apache-tomcat-7.0.96/conf/server.xml
+
+- name: Copy Tomcat users
+  copy: 
+    src: files/tomcat-users.xml 
+    dest: apache-tomcat-7.0.96/conf/tomcat-users.xml
+
+
+- name: start the tomcat service
+  command: apache-tomcat-7.0.96/bin/startup.sh
+      
   #- name: Allow port 8080
   #shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
 

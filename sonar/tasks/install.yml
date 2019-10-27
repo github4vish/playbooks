@@ -2,24 +2,64 @@
 
 - name: setup JRE environment
   yum:
-    name: ['java-1.8.0','java-1.8.0-devel']
+    name: ['MySQL-python','unzip','java-1.8.0','java-1.8.0-devel']
     state: present
-- name: Download  Nexus OSS package zip , unzip , start the service
-  command: '{{ item }}'
-  with_items:
-    - curl -LO https://download.sonatype.com/nexus/oss/nexus-latest-bundle.tar.gz 
-    - tar -xzf nexus-latest-bundle.tar.gz
-    - nexus-2.14.15-01/bin/nexus start
+ 
+    #MySQL-python
+- name: RPM install  MySQL 
+  yum:
+    name: https://github.com/github4vish/playbooks/blob/master/sonar/files/mysql-community-release-el7-5.noarch.rpm?raw=true
+    state: present
 
-  #- name: Allow related and established connections
-  #    iptables:
-  #       chain: INPUT
-  #       protocol: tcp
-  #       destination_port: 7777
-  #       ctstate: ESTABLISHED,RELATED
-  #       jump: ACCEPT
-     #become: yes
-  #- name: Allow port 8080
-  #shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+- name:  Mysql server  install
+  yum: 
+    name: mysql-server
+    state: present
+
+- name: start the  Mysql service
+  service: 
+    name: mysqld
+    state: started
+
+
+- name: create database  Mysql server 
+  become: no 
+  mysql_db:
+    login_user: root
+    login_password:
+    name: sonar
+    state: present
+
+
+- name: create user and privileges on  Mysql server  
+  become: no
+  mysql_user: 
+    login_user: root
+    login_password:
+    name: sonar
+    #host: localhost
+    password: sonar
+    priv: '*.*:ALL,GRANT'
+    state: present
+
+- name: Download  Sonar package zip , unzip
+  become: no
+  unarchive: 
+    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-6.7.7.zip
+    dest: /home/vish 
+    remote_src: yes
+    
+- name: copy sonar properties
+  become: no
+  copy:
+    src: files/sonar.properties
+    dest: sonarqube-6.7.7/conf/sonar.properties
+
+- name: Start sonar
+  become: no
+  command: sonarqube-6.7.7/bin/linux-x86-64/sonar.sh start
+
+
+
 
     
