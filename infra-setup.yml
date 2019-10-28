@@ -6,7 +6,7 @@
   - name: create a instance
     gcp_compute_instance:
       name: "{{ item }}"
-      machine_type: g1-small
+      machine_type: n1-standard-1
       disks:
       - auto_delete: 'true'
         boot: 'true'
@@ -28,35 +28,69 @@
       project: healthy-dolphin-245407
       auth_kind: serviceaccount
       service_account_file: "~/my_account.json"
-    register: in
+    register: abc
     with_items:
-    #- build
+    - build
+    - test
+    - release
+    - deploy  
     - jenkins
+
     
-      
+
   - name: Add host to groupname
     add_host: 
-      hostname: "{{ in.results[0].networkInterfaces[0].accessConfigs[0].natIP }}"
-      groupname: jenkins
+      hostname: "{{ abc.results[0].networkInterfaces[0].accessConfigs[0].natIP }}" 
+      groupname: build
   
-         #  - name: Add host to groupname
-         #  - aadd_host: 
-         #      hostname: {{ out.results[1].networkInterfaces[0].accessConfigs[0].natIP }}
-         #      groupname: jenkins
-      
+  - name: Add host to groupname
+    add_host: 
+      hostname: "{{ abc.results[1].networkInterfaces[0].accessConfigs[0].natIP }}" 
+      groupname: test
+  
+  - name: Add host to groupname
+    add_host: 
+      hostname: "{{ abc.results[2].networkInterfaces[0].accessConfigs[0].natIP }}" 
+      groupname: release
 
-         #- name: Configure build
-         #  hosts: build
-         #  become: yes
-         #  tasks:
-         #  - name: install the  Build Setup
-         #    yum:
-         #      name: ['java-1.8.0', 'java-1.8.0-devel', 'maven']
-         #      state: present  
-  
- 
-- name: Configure jenkins
-  hosts: jenkins
-  become: yes
+  - name: Add host to groupname
+    add_host: 
+      hostname: "{{ abc.results[3].networkInterfaces[0].accessConfigs[0].natIP }}" 
+      groupname: deploy
+
+  - name: Add host to groupname
+    add_host: 
+      hostname: "{{ abc.results[4].networkInterfaces[0].accessConfigs[0].natIP }}" 
+      groupname: jenkins
+
+
+- name: Manage build
+  hosts: build
+  become: true
+  tasks:
+  - name: install the  java,maven, git setup
+    yum:
+      name: ['git','java-1.8.0','java-1.8.0-devel','maven']
+      state: present
+
+- name: Manage sonar analysis instance
+  hosts: test
+  become: true
   roles:
-    - jenkins
+  - sonar
+- name: Manage release instances
+  hosts: release
+  become: true
+  roles:
+  - nexus
+- name: Manage deploy instances
+  hosts: deploy
+  become: true
+  roles:
+  - tomcat
+
+- name: Manage jenkins instances
+  hosts: jenkins
+  become: true
+  roles:
+  - jenkins

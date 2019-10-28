@@ -1,6 +1,6 @@
 ---
 
-- name: run jenkins
+- name: run tomcat
   hosts: deploy 
   become: true
   roles:

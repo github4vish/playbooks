@@ -16,7 +16,7 @@
     name: "jenkins"
     state: present
 
-- name: Allow port 8080
-  shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+    #- name: Allow port 8080
+    #shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
 
      
