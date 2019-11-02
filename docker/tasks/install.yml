@@ -5,7 +5,7 @@
     name: ['git','python-pip'] 
     state: present
 
-- name: install docker and docker compose
+- name: install docker 
   command: '{{ item }}'
   with_items:
     - curl -fsSL get.docker.com -o get-docker.sh     
@@ -17,7 +17,7 @@
     state: started
     enabled: yes
 
-- name: compose install
+- name: docker compose install
   pip: 
     name: docker-compose
 
