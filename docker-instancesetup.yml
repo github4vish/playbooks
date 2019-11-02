@@ -40,8 +40,8 @@
       hostname: "{{ abc.results[0].networkInterfaces[0].accessConfigs[0].natIP }}" 
       groupname: docker
 
-- name: Manage sonar analysis instance
-  hosts: test
+- name: Manage docker host instance
+  hosts: docker
   become: true
   roles:
   - docker
