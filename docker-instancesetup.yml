@@ -6,7 +6,7 @@
   - name: create a instance
     gcp_compute_instance:
       name: "{{ item }}"
-      machine_type: n1-standard-1
+      machine_type: n1-standard-2
       disks:
       - auto_delete: 'true'
         boot: 'true'
@@ -30,9 +30,7 @@
       service_account_file: "~/my_account.json"
     register: abc
     with_items:
-    - test
-    - release
-    - jenkins
+    - docker
 
     
 
@@ -40,34 +38,10 @@
   - name: Add host to groupname
     add_host: 
       hostname: "{{ abc.results[0].networkInterfaces[0].accessConfigs[0].natIP }}" 
-      groupname: test
-  
-  - name: Add host to groupname
-    add_host: 
-      hostname: "{{ abc.results[1].networkInterfaces[0].accessConfigs[0].natIP }}" 
-      groupname: release
-
-
-  - name: Add host to groupname
-    add_host: 
-      hostname: "{{ abc.results[2].networkInterfaces[0].accessConfigs[0].natIP }}" 
-      groupname: jenkins
-
-
+      groupname: docker
 
 - name: Manage sonar analysis instance
   hosts: test
   become: true
   roles:
-  - sonar
-- name: Manage release instances
-  hosts: release
-  become: true
-  roles:
-  - nexus
-
-- name: Manage jenkins instances
-  hosts: jenkins
-  become: true
-  roles:
-  - jenkins
+  - docker

@@ -1,0 +1,43 @@
+# This task will install apache http server
+
+- name: install req
+  yum:
+    name: ['git','python-pip'] 
+    state: present
+
+- name: install docker and docker compose
+  command: '{{ item }}'
+  with_items:
+    - curl -fsSL get.docker.com -o get-docker.sh     
+    - sh get-docker.sh
+
+- name: start docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: compose install
+  pip: 
+    name: docker-compose
+
+
+- git: 
+    repo: 'https://github.com/github4vish/docker-infra.git'
+    dest: docker-infra
+
+
+- name: Create and start services
+  command: docker-compose -f docker-infra/docker-compose.yml up -d
+  register: output
+
+- debug:
+    var: output
+
+
+
+
+
+      
+
+    
