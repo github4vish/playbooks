@@ -1,7 +1,7 @@
 ---
 
 - name: run nexus
-  hosts: release
+  hosts: all
   become: true
   roles:
     - ../nexus

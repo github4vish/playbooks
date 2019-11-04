@@ -1,7 +1,7 @@
 ---
 
 - name: run jenkins
-  hosts: jenkins 
+  hosts:  all
   become: true
   roles:
     - ../jenkins

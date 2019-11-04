@@ -26,7 +26,7 @@
   become: no 
   mysql_db:
     login_user: root
-    login_password:
+    login_password: Lync123*
     name: sonar
     state: present
 
@@ -35,7 +35,7 @@
   become: no
   mysql_user: 
     login_user: root
-    login_password:
+    login_password: Lync123*
     name: sonar
     #host: localhost
     password: sonar

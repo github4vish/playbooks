@@ -1,7 +1,7 @@
 ---
 
 - name: run sonar
-  hosts: test 
+  hosts: all 
   become: true
   roles:
     - ../sonar
